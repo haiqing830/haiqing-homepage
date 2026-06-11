@@ -36,11 +36,11 @@ if command -v gh >/dev/null 2>&1; then
     gh auth login
   fi
   gh auth setup-git
-  git push -u origin main --force
+  GIT_HTTP_VERSION=1.1 git push -u origin main --force
 else
   echo "Tip: install GitHub CLI for easier login: brew install gh"
   echo "Pushing via HTTPS (sign in if prompted)..."
-  git push -u origin main --force
+  GIT_HTTP_VERSION=1.1 git push -u origin main --force
 fi
 
 echo ""
