@@ -24,17 +24,25 @@ if ! git diff --cached --quiet; then
 fi
 
 echo ""
-echo "Pushing to GitHub (this replaces the current ${REPO} site)..."
-echo "If prompted, sign in to GitHub in the browser or enter a Personal Access Token."
+echo "=== Deploying new Minimal layout to GitHub Pages ==="
+echo "Target: ${SITE_URL}"
+echo "This replaces the old Jekyll theme with the jiaweizhou.me-style layout."
 echo ""
 
+# Prefer GitHub CLI for authentication (install: https://cli.github.com/)
 if command -v gh >/dev/null 2>&1; then
-  gh auth status >/dev/null 2>&1 || gh auth login
+  if ! gh auth status >/dev/null 2>&1; then
+    echo "Opening GitHub login..."
+    gh auth login
+  fi
+  gh auth setup-git
   git push -u origin main --force
 else
+  echo "Tip: install GitHub CLI for easier login: brew install gh"
+  echo "Pushing via HTTPS (sign in if prompted)..."
   git push -u origin main --force
 fi
 
 echo ""
-echo "Deployed. GitHub Pages may take 1-3 minutes to update."
-echo "Live site: ${SITE_URL}"
+echo "Done! Wait 1-3 minutes, then open: ${SITE_URL}"
+echo "You should see: left sidebar photo + 'Haiqing Xu 徐海晴' + ABOUT ME section."
